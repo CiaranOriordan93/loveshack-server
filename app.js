@@ -4,6 +4,8 @@ const bodyParer = require('body-parser');
 const priceRoute = require('./routes/price');
 const reviewRoute = require('./routes/review');
 
+const mongoConnect = require('./util/database');
+
 const app = express();
 
 app.use(bodyParer.json());
@@ -19,24 +21,6 @@ app.use('/price', priceRoute);
 
 app.use('/review', reviewRoute)
 
-app.listen(8081);
-
-/*
-export default {
-    getNightlyPrice() {
-        return apiClient.get('/nightly_price')
-    },
-    getWeeklyPrice() {
-        return apiClient.get('/weekly_price')
-    },
-    getReviews() {
-        return apiClient.get('/all_reviews')
-    },
-    getAvailability() {
-        return apiClient.get('/availability')
-    },
-    postBooking() {
-        return apiClient.post('/booking')
-    }
-}
-*/
+mongoConnect(client => {
+    app.listen(8081);
+})
