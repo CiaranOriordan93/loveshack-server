@@ -1,4 +1,4 @@
-const Booking = require('../models/booking');
+const Reviews = require('../models/review');
 const Prices = require('../models/prices');
 
 exports.postAddBooking =  (req, res, next) => {
@@ -20,6 +20,14 @@ exports.getPrices = (req, res, next) => {
     Prices.findByName(houseName)
         .then(result => {
             res.status(200).json({ pricePerNight: result.pricePerNight, pricePerWeek: result.pricePerWeek })
+        })
+        .catch(error => console.log(error));
+}
+
+exports.getReviews = (req, res, next) => {
+    Reviews.fetchAll()
+        .then(result => {
+            res.status(200).json({ reviews: result});
         })
         .catch(error => console.log(error));
 }
