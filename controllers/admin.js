@@ -1,14 +1,15 @@
 const Reviews = require('../models/review');
 const Prices = require('../models/prices');
+const Booking = require('../models/booking');
 
 exports.postAddBooking =  (req, res, next) => {
-    const name = req.body.name;
-    const reservation = req.body.reservation;
-    const booking = new Product(name, reservation);
-    Booking.save()
+    const name = req.body.data.name;
+    const arrivalDate = req.body.data.reservation.arrivalDate;
+    const departureDate = req.body.data.reservation.departureDate;
+    const booking = new Booking(name, arrivalDate, departureDate);
+    booking.save()
         .then(result => {
             console.log('created booking');
-            res.redirect('/');
         })
         .catch(error => {
             console.log(error);

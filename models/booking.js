@@ -1,15 +1,16 @@
 const getDb = require('../util/database').getDb;
 
 class Booking {
-    constructor(name, reservation) {
+    constructor(name, arrivalDate, departureDate) {
         this.name = name;
-        this.reservation = reservation;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
     }
 
     save() {
         const db = getDb();
-        return db.collection('house').insertOne(this).then(result => {
-            console.log(result);
+        return db.collection('booking').insertOne(this).then(result => {
+            console.log("success on saving to db from model");
         })
         .catch(error => {
             console.log(error);
