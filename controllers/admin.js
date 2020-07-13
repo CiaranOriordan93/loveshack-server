@@ -12,9 +12,7 @@ exports.postAddBooking =  (req, res, next) => {
             console.log('created booking');
             res.sendStatus(200);
         })
-        .catch(error => {
-            console.log(error);
-        }); 
+        .catch(error => console.log(error));
 }
 
 exports.getPrices = (req, res, next) => {
@@ -40,4 +38,24 @@ exports.getBookings = (req, res, next) => {
             res.status(200).json({ bookings: result })
         })
         .catch(error => console.log(error));
+}
+
+exports.deleteBooking = (req, res, next) => {
+    const date = req.body.date;
+    const name = req.body.name;
+
+    Booking.fetchByDate(date)
+        .then(result => {
+            if(result.title == name) {
+                Booking.delete(result)
+                    .then(result => {
+                        res.sendStatus(200);
+                })
+                .catch(error => console.log(error));
+            }else res.status(404).json( { error: 'Check your spelling' })
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(404).json( { error: error } )
+        });
 }

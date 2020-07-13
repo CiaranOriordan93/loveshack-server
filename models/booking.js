@@ -30,6 +30,31 @@ class Booking {
             })
             .catch(error => console.log(error));
     }
+
+    static fetchByDate(date) {
+        const db = getDb();
+        return db  
+            .collection('booking')
+            .find({ start: { $eq: date } })
+            .next()
+            .then(result => {
+                return result
+            })
+            .catch(error => {
+                return error
+            });
+    }
+
+    static delete(booking) {
+        const db = getDb();
+        return db
+            .collection('booking')
+            .deleteOne({ _id: booking._id })
+            .then(result => {
+                console.log('Deleted');
+            })
+            .catch(error => console.log(error));
+    }
 }
 
 module.exports = Booking;
