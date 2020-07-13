@@ -19,6 +19,8 @@ app.use(bodyParer.json());
 
 app.use('/admin', adminRoutes);
 
-mongoConnect( () => {
+const PORT = process.nextTick.PORT || 3003
+
+mongoConnect(PORT, () => {
     app.listen(8081);
 });
