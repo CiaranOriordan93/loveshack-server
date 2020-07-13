@@ -6,6 +6,7 @@ const adminRoutes = require('./routes/admin');
 const mongoConnect = require('./util/database').mongoConnect;
 
 const app = express();
+const PORT = process.nextTick.PORT || 3003
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -19,8 +20,8 @@ app.use(bodyParer.json());
 
 app.use('/admin', adminRoutes);
 
-const PORT = process.nextTick.PORT || 3003
 
-mongoConnect(PORT, () => {
-    app.listen(8081);
+
+mongoConnect(() => {
+    app.listen(PORT);
 });
