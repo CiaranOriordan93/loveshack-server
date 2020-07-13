@@ -4,6 +4,7 @@ const MongoClient = mongodb.MongoClient;
 let _db;
 
 const mongoConnect = callback => {
+    console.log(process.env)
     MongoClient.connect(process.env.MONGODB_URI)
         .then(client => {
             _db = client.db();
