@@ -7,6 +7,7 @@ const mongoConnect = callback => {
     MongoClient.connect(process.env.MONGODB_URI)
         .then(client => {
             _db = client.db();
+            callback();
     }).catch(error => {
         console.log(error);
         throw error;
