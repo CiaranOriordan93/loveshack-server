@@ -5,7 +5,7 @@ const router = express.Router();
 const adminController = require('../controllers/admin');
 
 router.post('/add-booking', adminController.postAddBooking);
-router.get('/get-booking', adminController.getBookings);
+router.get('/get-booking/:home', adminController.getBookings);
 router.delete('/delete-booking', adminController.deleteBooking);
 
 router.get('/reviews', adminController.getReviews);

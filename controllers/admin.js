@@ -4,9 +4,10 @@ const Booking = require('../models/booking');
 
 exports.postAddBooking =  (req, res, next) => {
     const name = req.body.data.name;
+    const home = req.body.data.home;
     const arrivalDate = req.body.data.reservation.arrivalDate;
     const departureDate = req.body.data.reservation.departureDate;
-    const booking = new Booking(name, arrivalDate, departureDate);
+    const booking = new Booking(name, arrivalDate, departureDate, home);
     booking.save()
         .then(result => {
             console.log('created booking');
@@ -33,9 +34,10 @@ exports.getReviews = (req, res, next) => {
 }
 
 exports.getBookings = (req, res, next) => {
-    Booking.fetchAll()
+    const home = req.params.home;
+    Booking.fetchByHome(home)
         .then(result => {
-            res.status(200).json({ bookings: result })
+            res.status(200).json({ bookings: result });
         })
         .catch(error => console.log(error));
 }
@@ -43,10 +45,11 @@ exports.getBookings = (req, res, next) => {
 exports.deleteBooking = (req, res, next) => {
     const date = req.body.date;
     const name = req.body.name;
+    const home = req.body.home;
 
-    Booking.fetchByDate(date)
+    Booking.fetchByDate(date, home)
         .then(result => {
-            if(result.title == name) {
+            if(result.name == name) {
                 Booking.delete(result)
                     .then(result => {
                         res.sendStatus(200);
