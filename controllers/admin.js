@@ -1,19 +1,30 @@
 const Reviews = require('../models/review');
 const Prices = require('../models/prices');
 const Booking = require('../models/booking');
+const formater = require('../models/bookingFormater');
 
 exports.postAddBooking =  (req, res, next) => {
     const name = req.body.data.name;
     const home = req.body.data.home;
     const arrivalDate = req.body.data.reservation.arrivalDate;
     const departureDate = req.body.data.reservation.departureDate;
-    const booking = new Booking(name, arrivalDate, departureDate, home);
-    booking.save()
-        .then(result => {
-            console.log('created booking');
-            res.sendStatus(200);
+
+    if(formater.formater(arrivalDate)) {
+        formater.doubleBookingChecker(arrivalDate, home).then(result => {
+            if(result) {
+                const booking = new Booking(name, arrivalDate, departureDate, home);
+                booking.save()
+                    .then(result => {
+                        console.log('created booking');
+                        res.sendStatus(200);
+                    })
+                    .catch(error => console.log(error));
+            }else res.status(404).json({ message: 'The home is already booked on that date'})
         })
         .catch(error => console.log(error));
+    }else {
+        res.status(404).json({ message: 'You selected an invalid date' });
+    }   
 }
 
 exports.getPrices = (req, res, next) => {
